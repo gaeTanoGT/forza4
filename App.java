@@ -1,5 +1,5 @@
 public class App {
-    @SuppressWarnings("static-access")
+
 	public static void main(String[] args) throws Exception {
         Interfaccia i = new Interfaccia();
         

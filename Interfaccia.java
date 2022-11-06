@@ -201,7 +201,84 @@ public class Interfaccia {
 		}
 	}
 	
-	//INTERFACCIA 1v1
+	//sqsqINTERFACCIA 1v1
+		public void showGri(FrameGriglia frGri) throws InterruptedException{
+			//MatAlg.simulaPareggio();
+			
+			DataFile file = new DataFile();
+			
+			while(file.getStato() == -1);
+			
+			boolean b = true;
+			boolean pl = file.getRound(); 	//0: pl1; 1: pl2
+			
+	    	if(file.getStato() == 0) {		//verifica corretto funzionamento del file
+	    		frGri.showErrore();
+	    		file.updateData(-1); 	//pulisce a zero il file
+	       		System.exit(0);
+	    	}
+	    	file.updateData(2); 	//incrementa numero partite di 1
+			 	
+	    	frGri.showGriglia();
+	    	frGri.showStartPlayer(pl);
+			//System.out.println("IL PLAYER INIZIALE: " + pl);
+			while(b) {
+				int col = getColonna(frGri);
+				
+				if(frGri.riempiCol(col, pl)) {		//se assegnazione è avvenuta con successo
+					if(!verificaEnd(pl, file, false, -1, frGri))
+						pl = !pl;	
+				}
+				frGri.cambiaLab2(pl);
+			}
+		}
+		
+		//sqqsINTERFACCIA 1vsBOT
+		public void showGri(int liv, FrameGriglia frGri) throws InterruptedException{
+			DataFile file = new DataFile();
+			
+			System.out.println("show gri is done");
+			
+			m.setNf(liv);
+			frGri.showGriglia();
+			
+			boolean b = true;
+			boolean pl = file.getRound(); 	//0: pl1; 1: pl2
+			
+			if(file.getStato() == 0) {		//verifica corretto funzionamento del file
+				frGri.showErrore();
+	    		file.updateData(-1); 	//pulisce a zero il file
+	       		System.exit(0);
+	    	}
+	    	file.updateData(2); 	//incrementa numero partite di 1
+			
+	    	frGri.showStartPlayer(pl? 1 : 0);		//int: bot    	
+			frGri.showGriglia();
+			//System.out.println("IL PLAYER INIZIALE: " + pl);
+			
+			while(b) {
+				if(!pl) {
+					int col = getColonna(frGri);
+					
+					if(frGri.riempiColBot(col, pl)) {
+						if(!verificaEnd(pl, file, false, liv, frGri))
+							pl = !pl;
+					}
+					frGri.cambiaLab2Bot(pl);
+				}else if(pl){		//mossa bot
+				    int col = m.mossaBot(liv);
+				    
+				    frGri.riempiColBot(col, pl);
+				    
+				    if(!verificaEnd(pl, file, true, liv, frGri))
+				    	pl = !pl;
+				    
+				    frGri.cambiaLab2Bot(pl);
+				}	
+			}		
+		}
+	
+	/*//INTERFACCIA 1v1
 	private void showGri(FrameGriglia frGri) throws InterruptedException{
 		//MatAlg.simulaPareggio();
 		System.out.println("showGri  1vs1");
@@ -290,7 +367,7 @@ public class Interfaccia {
 			    frGri.cambiaLab2Bot(pl);
 			}
 		}	while(b);*/
-	}
+	//}
 	
 	private int getColonna(FrameGriglia frGri) throws InterruptedException {
 		int k = frGri.getCol();

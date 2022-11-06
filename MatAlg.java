@@ -158,7 +158,7 @@ public class MatAlg {
 		}else {
 			mat[v[0]][v[1]] = 2;
 		}
-		//stampaMat();
+		stampaMat();
 		System.out.println("v2 "+v[2]);
 		
 		if(v[2] > nK)
