@@ -2,6 +2,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -40,6 +42,14 @@ public class FrameLivelli extends Interfaccia{
     private int liv = -1;
 
 	public FrameLivelli() {
+		frame.addWindowListener(new WindowAdapter() {
+    		public void windowClosing(WindowEvent e) {
+    			DataFile d = new DataFile();
+    			d.updateData(-1);
+    			System.out.println("Uscita");
+			}
+		});
+		
 		f1.setLayout(null);
         f1.setVisible(true);
         f1.setBounds(0,0,500,100);
@@ -180,8 +190,12 @@ public class FrameLivelli extends Interfaccia{
 	
 	public void butBack() {
 		mostraFrame(false);
+		
+		DataFile d = new DataFile();
+		d.updateData(-1);
+		
 		try {
-			super.back(1);
+			super.back(1, tipologia);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

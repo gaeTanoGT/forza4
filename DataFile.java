@@ -118,7 +118,7 @@ public class DataFile {
 
 	private void updateFile() {
 		try {
-			FileWriter out = new FileWriter(file);
+			FileWriter out = new FileWriter(file, false);
 			
 			for(int i = 0; i < 3 ; i++) {
 				//System.out.println(data[i]);
@@ -127,6 +127,14 @@ public class DataFile {
 			out.close();
 		} catch (Exception e) {
 		}
+	}
+	
+	public void removeMatch() {
+		getData();
+		
+		data[0]--;
+		
+		updateFile();
 	}
 	
 	public static String getResoconto() {
