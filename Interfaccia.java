@@ -1,10 +1,12 @@
 
+
 public class Interfaccia {
-	
+
+
 	static MatAlg m = new MatAlg();
 	
 	int tipologia;
-	int liv = -1;
+	//int liv = -1;
 	
 	FrameTipologia frTipo;// = new FrameTipologia();
 	FrameLivelli frLiv;// = new FrameLivelli();
@@ -12,49 +14,6 @@ public class Interfaccia {
 	
 	DataFile file = new DataFile();
 	
-	/*public void setGriglia(int liv, FrameLivelli frLiv) throws InterruptedException {
-		//if(liv == -1) {
-		this.liv = liv;
-			showGriglia();
-		//}
-	}*/
-	
-	public void setColonna(int col, int tipologia, FrameGriglia frGri) throws InterruptedException {
-		if(tipologia == 0) {
-			
-		}else if(tipologia == 1){
-			if(!frGri.getPl()) {
-				//int col = getColonna(frGri);
-				
-				if(frGri.riempiColBot(col, frGri.getPl())) {
-					if(!verificaEnd(frGri.getPl(), file, false, liv, frGri))
-					{
-						frGri.setPl(!frGri.getPl());
-						//pl = !pl;
-					}
-					/*else {
-						b = false;
-					}*/
-				}
-				frGri.cambiaLab2Bot(frGri.getPl());
-			}else if(frGri.getPl()){		//mossa bot
-			    //int col = m.mossaBot(liv);
-			    
-			    frGri.riempiColBot(col, frGri.getPl());
-			    
-			    if(!verificaEnd(frGri.getPl(), file, true, liv, frGri))
-			    {
-					frGri.setPl(!frGri.getPl());
-					//pl = !pl;
-				}
-			    /*else {
-					b = false;
-				}*/
-			    
-			    frGri.cambiaLab2Bot(frGri.getPl());
-			}
-		}
-	}
 	
 	public void setTipologia(boolean t) {
 		this.tipologia = t? 1 : 0;
@@ -63,7 +22,7 @@ public class Interfaccia {
 		//frTipo.mostraFrame(false);
 		if(tipologia == 0) {
 			try {
-				showGriglia(0);
+				showGriglia(0, -1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -82,10 +41,11 @@ public class Interfaccia {
 	}
 	
 	public void setLivello(int livello) throws InterruptedException {
-		liv = livello;
+		//liv = livello;
+		//frGri.setLiv(livello);
 		//frLiv.mostraFrame(false);
 		//System.out.println("W" + livello + tipologia);
-		showGriglia(1);/*
+		showGriglia(1, livello);/*
 		try {
 			
 		} catch (InterruptedException e) {
@@ -187,15 +147,19 @@ public class Interfaccia {
 	    System.out.println("Livello selezionato: " + liv);
 	    return liv;
 	}*/
-	public void showGriglia(int tipologia) throws InterruptedException {
+	public void showGriglia(int tipologia, int liv) throws InterruptedException {
 		frGri = new FrameGriglia(tipologia);
+		frGri.setLiv(liv);
+		frGri.setTipologia(tipologia);
+		//frGri.addWindowListener(new MyWindowListener());
+		//addWindowListener(this);
 		//frGri.mostraFrame(true);
 
 		//System.out.println("showGriglia"+tipologia);
 		if(tipologia == 1) {
 			//frLiv.mostraFrame(false);
 			//System.out.println("showGriLiv");
-			showGri(liv, frGri);
+			showGri(frGri.getLiv(), frGri);
 		}else if(tipologia == 0){
 			showGri(frGri);
 		}
@@ -239,57 +203,37 @@ public class Interfaccia {
 	
 	//INTERFACCIA 1vsBOT
 	private void showGri(int liv, FrameGriglia frGri) throws InterruptedException{
-		
-		System.out.println("showGri  BOTTTT  " + liv);
-		//DataFile file = new DataFile();
+		//non so spiegare perchè
+DataFile file = new DataFile();
 		
 		m.setNf(liv);
 		frGri.showGriglia();
-		frGri.mostraFrame(true);
-		//frTipo.mostraFrame(false);
-		//frLiv.mostraFrame(false);
 		
-		boolean b = true;
-		boolean pl = file.getRound(); 	//0: pl1; 1: pl2
+		//boolean b = true;
+		boolean pl = file.getRound(); 	//0: pl1; 1: pl2		//player iniziale
+		frGri.setPl(pl);
 		
 		if(file.getStato() == 0) {		//verifica corretto funzionamento del file
-    		frGri.showErrore();
+			frGri.showErrore();
     		file.updateData(-1); 	//pulisce a zero il file
        		System.exit(0);
     	}
     	file.updateData(2); 	//incrementa numero partite di 1
 		
-		frGri.showStartPlayer(pl? 1 : 0);		//int: bot    	
-//		frGri.showGriglia();
+    	frGri.showStartPlayer(pl? 1 : 0);		//int: bot    	
+    	frGri.showGriglia();
 		//System.out.println("IL PLAYER INIZIALE: " + pl);
+    	
+    	//this.liv = liv;
+    	//frGri.setLiv(liv);
 		
-		//TODO: provare a metterlo in un thread a parte....
-		/*do {
-			if(!pl) {
-				int col = getColonna(frGri);
-				
-				if(frGri.riempiColBot(col, pl)) {
-					if(!verificaEnd(pl, file, false, liv, frGri))
-						pl = !pl;
-					else {
-						b = false;
-					}
-				}
-				frGri.cambiaLab2Bot(pl);
-			}else if(pl){		//mossa bot
-			    int col = m.mossaBot(liv);
-			    
-			    frGri.riempiColBot(col, pl);
-			    
-			    if(!verificaEnd(pl, file, true, liv, frGri))
-			    	pl = !pl;
-			    else {
-					b = false;
-				}
-			    
-			    frGri.cambiaLab2Bot(pl);
-			}
-		}	while(b);*/
+    	if(pl) {
+    		Thread frThread = new Thread(frGri);
+        	frThread.start();
+        	System.out.println("BOT FATTP");	
+    	}
+    	
+			
 	}
 	
 	private int getColonna(FrameGriglia frGri) throws InterruptedException {
@@ -302,6 +246,7 @@ public class Interfaccia {
 		return k;
 	}
 	
+	//non servirebbe
 	private boolean verificaEnd(Boolean pl, DataFile file, boolean bot, int liv, FrameGriglia frGri) throws InterruptedException {
 		if(MatAlg.getVincitore() != 0) {	//vittoria di qualcuno
 			//b = false;
@@ -329,7 +274,7 @@ public class Interfaccia {
 	    	if(liv == -1)
 	    	{
 	    		frGri.mostraFrame(false);
-	    		showGriglia(0);
+	    		showGriglia(0, liv);
 	    	}
 	    	else {
 	    		frGri.mostraFrame(false);
@@ -360,7 +305,7 @@ public class Interfaccia {
 	    	if(liv == -1)
 	    	{
 	    		frGri.mostraFrame(false);
-	    		showGriglia(0);
+	    		showGriglia(0, liv);
 	    	}
 	    	else
 	    	{
@@ -374,6 +319,6 @@ public class Interfaccia {
 		
 		return false;
 	}
-	
+
 	
 }

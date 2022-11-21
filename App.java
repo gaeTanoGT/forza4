@@ -1,5 +1,7 @@
+import java.util.Arrays;
+
 public class App {
-    @SuppressWarnings("static-access")
+
 	public static void main(String[] args) throws Exception {
         Interfaccia i = new Interfaccia();
         
@@ -10,7 +12,14 @@ public class App {
         f1.mostraFrame(true);
         f2.mostraFrame(true);
         f3.mostraFrame(true);*/
+        
+        
+		
+		//System.err.println(Arrays.toString(v));
+		
         i.showTipologia();
+        
+        
         //i.showTipologia();
        // i.showLivelli();
         //i.showGriglia();
