@@ -11,6 +11,8 @@ public class DataFile {
 	int stato = -1;
 	
 	public DataFile() {
+		
+		
 		for(int i = 0; i < 3; i++)
 			data[i] = 0;
 		
@@ -19,21 +21,26 @@ public class DataFile {
 			setStato(true);
 		}else {
 			System.out.println("Errore riconoscimento File");
-			try {
-				if(f.createNewFile()) {
-					System.out.println("File creato con successo");
-					if(setup()) 
-						setStato(true);
-					else 
-						setStato(false);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("ERRORE CREAZIONE FILE");
-			}
+			creaFile();
 		}
 		
 		getData();
+	}
+	
+	private void creaFile() {
+		
+		try {
+			if(f.createNewFile()) {
+				System.out.println("File creato con successo");
+				if(setup()) 
+					setStato(true);
+				else 
+					setStato(false);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("ERRORE CREAZIONE FILE");
+		}
 	}
 	
 	private boolean setup() {
@@ -111,14 +118,18 @@ public class DataFile {
 			data[0] = 0;
 			data[1] = 0;
 			data[2] = 0;
+		}else if(vincitore == -2) {
+			data[0]--;
 		}
 		
 		updateFile();
 	}
 
 	private void updateFile() {
+
+		
 		try {
-			FileWriter out = new FileWriter(file);
+			FileWriter out = new FileWriter(file, false);
 			
 			for(int i = 0; i < 3 ; i++) {
 				//System.out.println(data[i]);
@@ -127,6 +138,14 @@ public class DataFile {
 			out.close();
 		} catch (Exception e) {
 		}
+	}
+	
+	public void removeMatch() {
+		getData();
+		
+		data[0]--;
+		
+		updateFile();	//TODO: verificare l'oggetto istanziato in interfaccia
 	}
 	
 	public static String getResoconto() {

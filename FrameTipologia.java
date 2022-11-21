@@ -2,6 +2,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -125,6 +127,14 @@ public class FrameTipologia extends Interfaccia implements Runnable{
 	}
 	
 	public FrameTipologia() {
+		frame.addWindowListener(new WindowAdapter() {
+    		public void windowClosing(WindowEvent e) {
+    			DataFile d = new DataFile();
+    			d.updateData(-1);
+    			System.out.println("Uscita");
+			}
+		});
+		
 		setFrameTipologia();
 	}
 	
