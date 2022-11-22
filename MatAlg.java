@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class MatAlg {
 
@@ -21,18 +22,23 @@ public class MatAlg {
 	
 	public static int getEnd(int col) {
 		for(int i = 5; i >= 0; i--) {
-			//System.out.println("rigg " + mat[i][col]);
 			if(mat[i][col] == 0)
 				return i;
 		}
 		return -1;
 	}
 	
-	public static void setGettone(int rig, int col, boolean pl) {
-		if(!pl)
-			mat[rig][col] = 1;
-		else
-			mat[rig][col] = 2;
+	public static void setGettone(int rig, int col, boolean pl, int tipologia) {
+		if(tipologia == 0) {
+			if(!pl)
+				mat[rig][col] = 1;
+			else
+				mat[rig][col] = 2;
+		}else if(tipologia == 1) {
+			if(!pl)
+				mat[rig][col] = 1;
+		}
+		
 	}
 	
 	public static int getVincitore() {
@@ -95,7 +101,7 @@ public class MatAlg {
 		return mat[rig][col];
 	}
 	
-	public static void clearMat() {
+	public void clearMat() {
 		for(int i = 0; i < 6; i++)
 	        for(int j = 0; j < 7; j++)
 	        	mat[i][j] = 0;
@@ -149,8 +155,11 @@ public class MatAlg {
 	}
 	
 	public int mossaBot(int liv) {
+		System.out.println(liv + "\t" + nK + "\t" + nF);
 		Jni c = new Jni();
 		v = c.getMossaBot(liv, mat, nK, nF);
+		
+		System.err.println(Arrays.toString(v));
 		
 		if(v[0] == -1) {
 			v[0] = getEnd(v[1]);
@@ -158,8 +167,7 @@ public class MatAlg {
 		}else {
 			mat[v[0]][v[1]] = 2;
 		}
-		//stampaMat();
-		System.out.println("v2 "+v[2]);
+		stampaMat();
 		
 		if(v[2] > nK)
 			nK = v[2];

@@ -2,6 +2,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -14,7 +16,6 @@ import javax.swing.JRadioButton;
 public class FrameLivelli extends Interfaccia{
 	JFrame frame = new JFrame();
 
-	
 	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     Point p = new Point(500, 500);
 	Point a = new Point(dim.width / 2 - 500, dim.height / 2 - 700 / 2);
@@ -40,6 +41,14 @@ public class FrameLivelli extends Interfaccia{
     private int liv = -1;
 
 	public FrameLivelli() {
+		frame.addWindowListener(new WindowAdapter() {
+    		public void windowClosing(WindowEvent e) {
+    			DataFile d = new DataFile();
+    			d.updateData(-1);
+    			System.out.println("Uscita");
+			}
+		});
+		
 		f1.setLayout(null);
         f1.setVisible(true);
         f1.setBounds(0,0,500,100);
@@ -98,7 +107,6 @@ public class FrameLivelli extends Interfaccia{
 			try {
 				giocaBut();
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		});
@@ -127,7 +135,6 @@ public class FrameLivelli extends Interfaccia{
         lab1.setText("Forza 4 1vsBOT");
     	lab2.setText("Selezionare Livello...");
     	
-    	//frame.removeAll();
         frame.repaint();
         frame.add(f1);
         frame.add(f2);
@@ -135,19 +142,16 @@ public class FrameLivelli extends Interfaccia{
         frame.setSize(500, 430);
         frame.setLocation(a);
         frame.setLayout(null);
-        //frame.setVisible(true);
     }
 
 	private void giocaBut() throws InterruptedException{    
         for(int i = 0; i < 4; i++){
             if(rad[i].isSelected()){
             	setLiv(i);
-                //liv = i;
             }
         }
         if(mostraErrore && liv == -1)		// && b == false
         {
-        	//b = true;
         	mostraErrore = false;
         	JOptionPane.showMessageDialog(frame, "Selezionare un livello...");
         	try {
@@ -156,20 +160,12 @@ public class FrameLivelli extends Interfaccia{
 			} 
         }
         
-        //super.setGriglia(getLiv(), this);
-        
         mostraFrame(false);
         super.setLivello(liv);
     }
 	
 	public void setLiv(int liv) {
 		this.liv = liv;
-		/*try {
-			//super.setLivello(liv, this);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 	}
 	public int getLiv(){
         return liv;
@@ -180,10 +176,10 @@ public class FrameLivelli extends Interfaccia{
 	
 	public void butBack() {
 		mostraFrame(false);
+		
 		try {
-			super.back(1);
+			super.back(1, tipologia);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

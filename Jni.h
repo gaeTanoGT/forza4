@@ -7,21 +7,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     Jni
- * Method:    getMossaBot
- * Signature: (I[[III)[I
- */
-JNIEXPORT jintArray JNICALL Java_Jni_getMossaBot
-  (JNIEnv *, jobject, jint, jobjectArray, jint, jint);
-
-/*
- * Class:     Jni
- * Method:    stampami
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_Jni_stampami
-  (JNIEnv *, jobject);
+	/*
+	 * Class:     Jni
+	 * Method:    getMossaBot
+	 * Signature: (I[[III)[I
+	 */
+	JNIEXPORT jintArray JNICALL Java_Jni_getMossaBot
+	(JNIEnv*, jobject, jint, jobjectArray, jint, jint);
 
 #ifdef __cplusplus
 }

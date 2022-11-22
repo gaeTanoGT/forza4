@@ -2,13 +2,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class FrameTipologia extends Interfaccia implements Runnable{
+public class FrameTipologia extends Interfaccia{
 
 	JFrame frame = new JFrame();
 
@@ -46,11 +48,8 @@ public class FrameTipologia extends Interfaccia implements Runnable{
 		ascoltaTipologia = true;
 		this.tipologia = tipologia;
 	}
-	//private static final long serialVersionUID = 1L;
 	
 	public void setFrameTipologia() {
-
-		
 		f1.setLayout(null);
         f1.setVisible(true);
         f1.setBounds(0,0,500,100);
@@ -67,8 +66,6 @@ public class FrameTipologia extends Interfaccia implements Runnable{
         lab1.setFont(new Font("1", Font.ITALIC, 30));
         lab1.setBounds(0,0,500,50);
         
-    
-        
         pan2.setLayout(null);
         pan2.setVisible(true);
         pan2.setBounds(0,50,500,50);
@@ -76,7 +73,6 @@ public class FrameTipologia extends Interfaccia implements Runnable{
         lab2.setHorizontalAlignment(JLabel.CENTER);
         lab2.setFont(new Font("1", Font.ITALIC, 20));
         lab2.setBounds(100,0,300,50);
-
 
         frame.setTitle("Forza 4");
         frame.setLayout(null);
@@ -120,18 +116,20 @@ public class FrameTipologia extends Interfaccia implements Runnable{
         frame.setSize(500, 300);
         frame.setLocation(a);
         frame.setLayout(null);
-
-
 	}
 	
 	public FrameTipologia() {
+		frame.addWindowListener(new WindowAdapter() {
+    		public void windowClosing(WindowEvent e) {
+    			DataFile d = new DataFile();
+    			d.updateData(-1);
+    			System.out.println("Uscita");
+			}
+		});
+		
 		setFrameTipologia();
 	}
 	
-	/*public void showTipologia() {
-        frame.setVisible(true);
-	}
-*/
 	private void but1vs1() {
     	System.out.println("1vs1");
     	//tipologia = false;
@@ -139,25 +137,19 @@ public class FrameTipologia extends Interfaccia implements Runnable{
     	setTipologia(false);
     	mostraFrame(false);
     	super.setTipologia(false);
-    	//b = true;
     }
     private void butBOT() {
     	System.out.println("1vsBOT");
-    	//tipologia = true;
     	ascoltaTipologia = true;
     	setTipologia(true);
     	mostraFrame(false);
     	super.setTipologia(true);
-    	//b = true;
     }
     public int getTipologiaSelezionata() {
-    	//System.out.println("h: " + h + " " +b);
-    	
     	if(ascoltaTipologia)
     	{
     		System.out.println("289");
     		ascoltaTipologia = false;
-    		//h = false;
     		return getTipologia()? 1 : 0;
     	}
     	else {
@@ -177,13 +169,4 @@ public class FrameTipologia extends Interfaccia implements Runnable{
     public void resetTipologia() {
     	ascoltaTipologia = false;
     }
-
- 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		setFrameTipologia();
-		mostraFrame(true);
-	}
-    
 }
