@@ -1,13 +1,18 @@
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class FrameTipologia extends Interfaccia{
@@ -18,11 +23,10 @@ public class FrameTipologia extends Interfaccia{
     Point p = new Point(500, 500);
 	Point a = new Point(dim.width / 2 - 500, dim.height / 2 - 700 / 2);
 	
+	FontResized lab1;
 	JPanel pan1 = new JPanel();
-    JLabel lab1 = new JLabel();
     JPanel pan2 = new JPanel();
-    JLabel lab2 = new JLabel();
-
+    FontResized lab2;
     JButton butt = new JButton();
     JButton butt2 = new JButton();
     
@@ -49,73 +53,81 @@ public class FrameTipologia extends Interfaccia{
 		this.tipologia = tipologia;
 	}
 	
-	public void setFrameTipologia() {
-		f1.setLayout(null);
-        f1.setVisible(true);
-        f1.setBounds(0,0,500,100);
-
-        f2.setLayout(null);
-        f2.setVisible(true);
-        f2.setBounds(0,0,500,500);
-
-        pan1.setLayout(null);
+	public void setFrameTipologia() {        
         pan1.setVisible(true);
-        pan1.setBounds(0,0,500,50);
-        lab1.setLayout(null);
-        lab1.setHorizontalAlignment(JLabel.CENTER);
-        lab1.setFont(new Font("1", Font.ITALIC, 30));
-        lab1.setBounds(0,0,500,50);
-        
-        pan2.setLayout(null);
+        lab1 = new FontResized("Forza 4", 100);
+  
         pan2.setVisible(true);
-        pan2.setBounds(0,50,500,50);
-        lab2.setLayout(null);
-        lab2.setHorizontalAlignment(JLabel.CENTER);
-        lab2.setFont(new Font("1", Font.ITALIC, 20));
-        lab2.setBounds(100,0,300,50);
+        lab2 = new FontResized("Selezionare tipologia di gioco:", 65);
 
         frame.setTitle("Forza 4");
-        frame.setLayout(null);
+        frame.setLayout(new GridLayout(2, 1));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
         
         pan1.add(lab1);
-        f1.add(pan1);
-        
         pan2.add(lab2);
-        f1.add(pan2);
+        JPanel pan3 = new JPanel();
+        pan3.setLayout(new GridLayout(2, 1));
+        pan3.add(pan1);
+        pan3.add(pan2);
+        frame.add(pan3);
         
         ascoltaTipologia = false;
-    	
-    	f1.setBounds(0,0,500,150);
-        pan2.setBounds(0,70,500,50);
-        lab2.setBounds(0,0,500,50);
-    	
-    	lab1.setText("Forza 4111");
-    	lab2.setText("Selezionare tipologia di gioco:");
     	
     	butt.setText("1vs1");
         butt.setFocusPainted(false);
         butt.addActionListener(e -> but1vs1());
-        butt.setBounds(100, 150, 100, 50);
+        butt.setPreferredSize(new Dimension(100, 50));
+        butt.setMaximumSize(new Dimension(1000, 500));
+        butt.setMargin(new Insets(0, 0, 0, 0));
         butt.setVisible(true);
         
         butt2.setText("1vsBOT");
         butt2.setFocusPainted(false);
         butt2.addActionListener(e -> butBOT());
-        butt2.setBounds(300, 150, 100, 50);
+        butt2.setPreferredSize(new Dimension(100, 50));
+        butt2.setMaximumSize(new Dimension(1000, 500));
+        butt2.setMargin(new Insets(0, 0, 0, 0));
         butt2.setVisible(true);
+		
+        JPanel buttonPane = new JPanel();
+        buttonPane.add(butt);
+        buttonPane.add(Box.createRigidArea(new Dimension(50, 0)));
+        buttonPane.add(butt2);
+        buttonPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    frame.add(buttonPane);
         
-        f2.add(butt);
-        f2.add(butt2);
-        
-        frame.repaint();
-        frame.add(f1);
-        frame.add(f2);
+        frame.addComponentListener(new ComponentAdapter() {
+        	public void componentShown(ComponentEvent e) {
+        		lab1.ridimensiona(new Dimension(pan1.getWidth(), pan1.getHeight()));
+        		lab2.ridimensiona(new Dimension(pan2.getWidth(), pan2.getHeight()));
+			}
+        	public void componentResized(ComponentEvent e) {
+    			lab1.ridimensiona(new Dimension(pan1.getWidth(), pan1.getHeight()));
+        		lab2.ridimensiona(new Dimension(pan2.getWidth(), pan2.getHeight()));
+        		
+        		//pulsanti
+        		int h = frame.getHeight();
+        		int w = frame.getWidth();
+        		//(300 * 500) : (getHeight * getWindt) = 500 : x
+        		int areaButton = ((h * w) * 750) / 15000;
+        		int baseButton = areaButton / ((50 * h) / 300);
+        		int altezzaButton = areaButton / ((100 * w) / 500);
+        		buttonPane.revalidate();
+        		butt.setPreferredSize(new Dimension(baseButton, altezzaButton));
+        		butt2.setPreferredSize(new Dimension(baseButton, altezzaButton));
+        		
+        		int sizeFont = (frame.getWidth() * frame.getHeight() * 45) / 600000;
+        		butt.setFont(new Font("Dialog", Font.BOLD, sizeFont));
+        		butt2.setFont(new Font("Dialog", Font.BOLD, sizeFont));
+        		buttonPane.repaint();
+        	}
+		});
+        frame.pack();
 
-        frame.setSize(500, 300);
+	    frame.setSize(500, 300);
         frame.setLocation(a);
-        frame.setLayout(null);
 	}
 	
 	public FrameTipologia() {
