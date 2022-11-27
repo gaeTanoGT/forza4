@@ -1,3 +1,6 @@
+import java.awt.Dimension;
+import java.awt.Point;
+
 public class Interfaccia {
 	MatAlg m = new MatAlg();
 	
@@ -6,6 +9,58 @@ public class Interfaccia {
 	FrameGriglia frGri;
 	
 	int tipologia;
+	
+	static Dimension defaultSize = new Dimension();
+	static boolean isSized = false;
+	static Point defaultPosition = new Point();
+	static boolean isMoved = false;
+	
+	public static boolean isSized() {
+		return isSized;
+	}
+
+	public static void setSized(boolean isSized) {
+		Interfaccia.isSized = isSized;
+	}
+
+	public static boolean isMoved() {
+		return isMoved;
+	}
+
+	public static void setMoved(boolean isMoved) {
+		Interfaccia.isMoved = isMoved;
+	}
+
+	public Point getDefaultPosition() {
+		return defaultPosition;
+	}
+
+	public void setDefaultPosition(Point defaultPosition) {
+		Interfaccia.defaultPosition = defaultPosition;
+	}
+
+	public Dimension getDefaultSize() {
+		return defaultSize;
+	}
+
+	public void setDefaultSize(Dimension defaultSize) {
+		Interfaccia.defaultSize = defaultSize;
+		//System.err.println(defaultSize);
+	}
+
+	public int getDefaultWidth() {
+		return (int)defaultSize.getWidth();
+	}
+	public int getDefaultHeight() {
+		return (int)defaultSize.getHeight();
+	}
+	
+	public void setDefaultWidth(int width) {
+		Interfaccia.defaultSize.setSize(width, defaultSize.getHeight());
+	}
+	public void setDefaultHeight(int height) {
+		Interfaccia.defaultSize.setSize(defaultSize.getWidth(), height);
+	}
 	
 	public void setTipologia(boolean t) {
 		this.tipologia = t? 1 : 0;

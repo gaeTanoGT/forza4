@@ -23,18 +23,34 @@ public class FrameTipologia extends Interfaccia{
     Point p = new Point(500, 500);
 	Point a = new Point(dim.width / 2 - 500, dim.height / 2 - 700 / 2);
 	
-	FontResized lab1;
-	JPanel pan1 = new JPanel();
-    JPanel pan2 = new JPanel();
-    FontResized lab2;
-    JButton butt = new JButton();
-    JButton butt2 = new JButton();
+	FontResized lab1;			//forza 4
+	JPanel pan1 = new JPanel();	//lab1
+    JPanel pan2 = new JPanel();	//lab2
+    FontResized lab2;			//selezionare tipologia
+    JButton butt = new JButton();	//1vs1
+    JButton butt2 = new JButton();	//1vsBot
     
-    JPanel f1 = new JPanel();
-    JPanel f2 = new JPanel();
-	
 	private boolean ascoltaTipologia = false;
-	private boolean tipologia = false;
+	private boolean tipologia = false;		//0: 1vs1;	1: 1vsBot
+	
+	private boolean setSized = false;
+	public boolean isSetSized() {
+		return setSized;
+	}
+
+	public void setSetSized(boolean setSized) {
+		this.setSized = setSized;
+	}
+
+	public boolean isSetMoved() {
+		return setMoved;
+	}
+
+	public void setSetMoved(boolean setMoved) {
+		this.setMoved = setMoved;
+	}
+
+	private boolean setMoved = false;
 	
 	public boolean getAscoltaTipologia() {
 		return ascoltaTipologia;
@@ -122,12 +138,49 @@ public class FrameTipologia extends Interfaccia{
         		butt.setFont(new Font("Dialog", Font.BOLD, sizeFont));
         		butt2.setFont(new Font("Dialog", Font.BOLD, sizeFont));
         		buttonPane.repaint();
+        		
+        		
+        		if(!getDefaultSize().equals(frame.getSize()))
+        		{
+        			if(!getDefaultSize().equals(new Dimension(0, 0)) && !getDefaultSize().equals(new Dimension(500, 430))){
+        				setSized(true);
+        			}
+    				System.err.println("ridimensionato " + getDefaultSize());
+    				setDefaultSize(new Dimension(frame.getSize()));
+        		}
+        	}
+        	
+        	public void componentMoved(ComponentEvent e) {
+        		
+        		System.err.println(getDefaultPosition());
+        		if(!getDefaultPosition().equals(frame.getLocation()))
+        		{
+        			if(!getDefaultPosition().equals(new Point(0, 0))) {
+        				setMoved(true);
+        			}
+    				System.out.println("spostatooo " + getDefaultPosition());
+    				setDefaultPosition(frame.getLocation());
+        		}
         	}
 		});
         frame.pack();
 
-	    frame.setSize(500, 300);
-        frame.setLocation(a);
+        if(!isSized)
+        {
+        	System.err.println("!sized");
+        	frame.setSize(500, 300);
+        }else {
+        	System.err.println("sized");
+        	frame.setSize(getDefaultSize());
+        }
+        
+        if(!isMoved) {
+        	System.err.println("!moved");
+        	frame.setLocation(a);
+        } else {
+        	System.err.println("moved");
+			frame.setLocation(getDefaultPosition());
+		}
 	}
 	
 	public FrameTipologia() {
