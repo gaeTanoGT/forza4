@@ -1,3 +1,5 @@
+CREAZIONE FILE DLL
+
 https://youtu.be/MyhiBldT0c0
 	-javac -h . JNI.java
 
