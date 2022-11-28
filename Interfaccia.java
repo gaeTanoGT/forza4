@@ -45,7 +45,6 @@ public class Interfaccia {
 
 	public void setDefaultSize(Dimension defaultSize) {
 		Interfaccia.defaultSize = defaultSize;
-		//System.err.println(defaultSize);
 	}
 
 	public int getDefaultWidth() {
@@ -89,7 +88,7 @@ public class Interfaccia {
 	}
 	
 	public void back(int page, int tipologia) throws InterruptedException {
-		System.out.println(page + " " + tipologia);
+		//System.out.println(page + " " + tipologia);
 		if(page == 1 || (page == 2 && tipologia == 0)) {
 			showTipologia();
     	}else if(page == 2 && tipologia == 1) {
@@ -163,8 +162,9 @@ public class Interfaccia {
     	}
     	file.updateData(2); 	//incrementa numero partite di 1
 		
-    	frGri.showStartPlayer(pl? 1 : 0);		//int: bot    	
     	frGri.showGriglia();
+    	frGri.showStartPlayer(pl? 1 : 0);		//int: bot
+    	frGri.mostraFrame(true);
 		
     	if(pl) {
     		Thread frThread = new Thread(frGri);

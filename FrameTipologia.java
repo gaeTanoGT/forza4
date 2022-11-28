@@ -134,51 +134,42 @@ public class FrameTipologia extends Interfaccia{
         		butt.setPreferredSize(new Dimension(baseButton, altezzaButton));
         		butt2.setPreferredSize(new Dimension(baseButton, altezzaButton));
         		
-        		int sizeFont = (frame.getWidth() * frame.getHeight() * 45) / 600000;
+        		int sizeFont = (frame.getWidth() * 20) / 500;
         		butt.setFont(new Font("Dialog", Font.BOLD, sizeFont));
         		butt2.setFont(new Font("Dialog", Font.BOLD, sizeFont));
         		buttonPane.repaint();
         		
-        		
         		if(!getDefaultSize().equals(frame.getSize()))
         		{
-        			if(!getDefaultSize().equals(new Dimension(0, 0)) && !getDefaultSize().equals(new Dimension(500, 430))){
+        			if(!getDefaultSize().equals(new Dimension(0, 0)) && (!getDefaultSize().equals(new Dimension(500, 430)) && !getDefaultSize().equals(new Dimension(500, 500)))){
         				setSized(true);
         			}
-    				System.err.println("ridimensionato " + getDefaultSize());
     				setDefaultSize(new Dimension(frame.getSize()));
         		}
         	}
         	
         	public void componentMoved(ComponentEvent e) {
-        		
-        		System.err.println(getDefaultPosition());
         		if(!getDefaultPosition().equals(frame.getLocation()))
         		{
         			if(!getDefaultPosition().equals(new Point(0, 0))) {
         				setMoved(true);
         			}
-    				System.out.println("spostatooo " + getDefaultPosition());
     				setDefaultPosition(frame.getLocation());
         		}
         	}
 		});
+        
         frame.pack();
 
-        if(!isSized)
-        {
-        	System.err.println("!sized");
+        if(!isSized) {
         	frame.setSize(500, 300);
         }else {
-        	System.err.println("sized");
         	frame.setSize(getDefaultSize());
         }
         
         if(!isMoved) {
-        	System.err.println("!moved");
         	frame.setLocation(a);
         } else {
-        	System.err.println("moved");
 			frame.setLocation(getDefaultPosition());
 		}
 	}

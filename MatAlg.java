@@ -97,7 +97,7 @@ public class MatAlg {
 	    return true;
 	}
 	
-	public static int getMat(int rig, int col) {
+	public int getMat(int rig, int col) {
 		return mat[rig][col];
 	}
 	
@@ -107,7 +107,7 @@ public class MatAlg {
 	        	mat[i][j] = 0;
 	}
 	
-	public static void simulaPareggio() {
+	public void simulaPareggio() {
 		//mat[0][0] = 1;
 		mat[1][0] = 2;
 		mat[2][0] = 2;
@@ -151,7 +151,8 @@ public class MatAlg {
 		mat[4][6] = 1;
 		mat[5][6] = 2;
 		
-		FrameGriglia.aggiornaMat();
+		//super.aggiornaMat();
+		//FrameGriglia.aggiornaMat();
 	}
 	
 	public int mossaBot(int liv) {

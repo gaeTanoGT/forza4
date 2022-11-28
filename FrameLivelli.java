@@ -148,6 +148,8 @@ public class FrameLivelli extends Interfaccia{
         
         frame.addComponentListener(new ComponentAdapter() {
         	public void componentShown(ComponentEvent e) {
+        		System.out.println(getDefaultSize());
+        		
         		lab1.ridimensiona(new Dimension(f1.getWidth(), f1.getHeight()));
         		lab2.ridimensiona(new Dimension(f1.getWidth(), f1.getHeight()));
         		
@@ -168,12 +170,12 @@ public class FrameLivelli extends Interfaccia{
         		butt.setPreferredSize(new Dimension(baseButton, altezzaButton));
         		back.setPreferredSize(new Dimension((int)(baseButton * 0.8), (int)(altezzaButton * 0.7)));
         		
-        		int sizeFont = (frame.getWidth() * frame.getHeight() * 45) / 800000;
+        		int sizeFont = (frame.getWidth() * 15) / 500;
         		butt.setFont(new Font("Dialog", Font.BOLD, sizeFont));
         		back.setFont(new Font("Dialog", Font.BOLD, (int)(sizeFont * 0.6)));
         		buttonPane.repaint();
         		
-        		int sizeFontRad = (frame.getWidth() * frame.getHeight() * 45) / 800000;
+        		int sizeFontRad = (frame.getWidth() * 15) / 500;
         		for(JRadioButton r : rad) {
         			r.setFont(new Font("Dialog", Font.BOLD, sizeFontRad));
         		}
@@ -211,12 +213,12 @@ public class FrameLivelli extends Interfaccia{
         		butt.setPreferredSize(new Dimension(baseButton, altezzaButton));
         		back.setPreferredSize(new Dimension((int)(baseButton * 0.8), (int)(altezzaButton * 0.7)));
         		
-        		int sizeFont = (frame.getWidth() * frame.getHeight() * 45) / 800000;
+        		int sizeFont = (frame.getWidth() * 15) / 500;
         		butt.setFont(new Font("Dialog", Font.BOLD, sizeFont));
         		back.setFont(new Font("Dialog", Font.BOLD, (int)(sizeFont * 0.6)));
         		buttonPane.repaint();
         		
-        		int sizeFontRad = (frame.getWidth() * frame.getHeight() * 45) / 800000;
+        		int sizeFontRad = (frame.getWidth() * 15) / 500;
         		for(JRadioButton r : rad) {
         			r.setFont(new Font("Dialog", Font.PLAIN, sizeFontRad));
         		}
@@ -236,22 +238,19 @@ public class FrameLivelli extends Interfaccia{
         		//reimposto default size di interfaccia
         		if(!getDefaultSize().equals(frame.getSize()))
         		{
-        			if(!getDefaultSize().equals(new Dimension(0, 0)) && !getDefaultSize().equals(new Dimension(500, 300))){
+        			if(!getDefaultSize().equals(new Dimension(0, 0)) && (!getDefaultSize().equals(new Dimension(500, 300)) && (!getDefaultSize().equals(new Dimension(500, 500))))){
         				setSized(true);
         			}
-    				System.err.println("ridimensionato " + getDefaultSize());
     				setDefaultSize(new Dimension(frame.getSize()));
         		}
         	}
         	
         	public void componentMoved(ComponentEvent e) {
-        		System.err.println(getDefaultPosition());
         		if(!getDefaultPosition().equals(frame.getLocation()))
         		{
         			if(!getDefaultPosition().equals(new Point(0, 0))) {
         				setMoved(true);
         			}
-    				System.out.println("spostatooo " + getDefaultPosition());
     				setDefaultPosition(frame.getLocation());
         		}
         	}
@@ -260,23 +259,17 @@ public class FrameLivelli extends Interfaccia{
         frame.pack();
         
         //se non hai cambiato la dimensione
-        if(!isSized)
-        {
-        	System.err.println("!sized");
+        if(!isSized) {
         	frame.setSize(500, 430);
         }else {
-        	System.err.println("sized");
         	frame.setSize(getDefaultSize());
         }
         
         if(!isMoved) {
-        	System.err.println("!moved");
         	frame.setLocation(a);
         } else {
-        	System.err.println("moved");
 			frame.setLocation(getDefaultPosition());
 		}
-        
     }
 
 	private void giocaBut() throws InterruptedException{    

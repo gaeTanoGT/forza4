@@ -1,13 +1,19 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,24 +25,24 @@ import javax.swing.JRadioButton;
 
 public class FrameGriglia extends Interfaccia implements Runnable{
 	
-	private static String bianco = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\bianco.png";
-	private static String giallo = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\giallo.png";
-	private static String rosso = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\rosso.png";
+	private final String bianco = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\bianco.png";
+	private final String giallo = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\giallo.png";
+	private final String rosso = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\rosso.png";
 	
-	static ImageIcon ic1 = new ImageIcon(bianco);
-    final static Image img1 = ic1.getImage(); // transform it 
-    final static Image newimg1 = img1.getScaledInstance(45,45, java.awt.Image.SCALE_SMOOTH);
-    final static ImageIcon white = new ImageIcon(newimg1);
+	ImageIcon ic1 = new ImageIcon(bianco);
+    Image img1 = ic1.getImage(); // transform it 
+    Image newimg1 = img1.getScaledInstance(45,45, Image.SCALE_SMOOTH);
+    ImageIcon white = new ImageIcon(newimg1);
     
-    static ImageIcon ic2 = new ImageIcon(giallo);
-    final static Image img2 = ic2.getImage(); // transform it 
-    final static Image newimg2 = img2.getScaledInstance(45,45, java.awt.Image.SCALE_SMOOTH);
-    final static ImageIcon yellow = new ImageIcon(newimg2);
+    ImageIcon ic2 = new ImageIcon(giallo);
+    Image img2 = ic2.getImage(); // transform it 
+    Image newimg2 = img2.getScaledInstance(45,45, Image.SCALE_SMOOTH);
+    ImageIcon yellow = new ImageIcon(newimg2);
     
-    static ImageIcon ic3 = new ImageIcon(rosso);
-    final static Image img3 = ic3.getImage(); // transform it 
-    final static Image newimg3 = img3.getScaledInstance(45,45, java.awt.Image.SCALE_SMOOTH); 
-    final static ImageIcon red = new ImageIcon(newimg3);
+    ImageIcon ic3 = new ImageIcon(rosso);
+    Image img3 = ic3.getImage(); // transform it 
+    Image newimg3 = img3.getScaledInstance(45,45, Image.SCALE_SMOOTH); 
+    ImageIcon red = new ImageIcon(newimg3);
     
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     Point p = new Point(500, 500);
@@ -47,9 +53,9 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 	JFrame frame = new JFrame();
 	
     JPanel pan1 = new JPanel();
-    JLabel lab1 = new JLabel();
+    FontResized lab1;
     JPanel pan2 = new JPanel();
-    JLabel lab2 = new JLabel();
+    FontResized lab2;
 
     JButton butt = new JButton();
     JButton butt2 = new JButton();
@@ -57,12 +63,13 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 
     JRadioButton[] rad = new JRadioButton[4];
 
-    static JButton[][] but = new JButton[6][7];
+    JButton[][] but = new JButton[6][7];
 
     ButtonGroup gr = new ButtonGroup();
 
     JPanel f1 = new JPanel();
     JPanel f2 = new JPanel();
+    JPanel f2JPanel = new JPanel();
     
     private boolean pl;		//player in gioco
     private int liv;
@@ -104,30 +111,24 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 			}
 		});
     	
-    	
-    	f1.setLayout(null);
+    	setFrameGriglia();
+    }
+	
+	private void setFrameGriglia() {
         f1.setVisible(true);
-        f1.setBounds(0,0,500,100);
+        f1.setLayout(new BoxLayout(f1, BoxLayout.Y_AXIS));
 
-        f2.setLayout(null);
         f2.setVisible(true);
-        f2.setBounds(0,0,500,500);
+        f2.setLayout(new BorderLayout(100, 100));
 
-        pan1.setLayout(null);
         pan1.setVisible(true);
-        pan1.setBounds(0,0,500,50);
-        lab1.setLayout(null);
-        lab1.setHorizontalAlignment(JLabel.CENTER);
-        lab1.setFont(new Font("1", Font.ITALIC, 30));
-        lab1.setBounds(0,0,500,50);
+        lab1 = new FontResized("Forza 4", 70);
         
       //MATRICE DI BOTTONI
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 7; j++){
                 but[i][j] = new JButton();
-                //setGrigliaBianca(but[i][j]);
                 but[i][j].setIcon(white);
-                but[i][j].setBounds(3 + (50 * j), 3 + (50 * i), 50, 50);
                 but[i][j].setVisible(false);
                 but[i][j].setBorderPainted(false);
                 but[i][j].setFocusPainted(false);
@@ -138,33 +139,34 @@ public class FrameGriglia extends Interfaccia implements Runnable{
             }
         }
         
-        pan2.setLayout(null);
         pan2.setVisible(true);
-        pan2.setBounds(0,50,500,50);
-        lab2.setLayout(null);
+        pan2.setLayout(new BorderLayout(10, 10));
+        lab2 = new FontResized("", 30);
         lab2.setHorizontalAlignment(JLabel.CENTER);
-        lab2.setFont(new Font("1", Font.ITALIC, 20));
-        lab2.setBounds(100,0,300,50);
         
         //back button
         back.setText("Indietro");
         back.setFocusPainted(false);
         back.addActionListener(e -> butBack());
-        back.setBounds(30, 0, 80, 35);
+        back.setPreferredSize(new Dimension(80, 35));
+        back.setMaximumSize(new Dimension(800, 350));
+        back.setMargin(new Insets(0, 0, 0, 0));
         back.setVisible(true);
-        pan2.add(back);
+        JPanel butJPanel = new JPanel();
+        butJPanel.add(back);
+        pan2.add(butJPanel, BorderLayout.WEST);
 
         frame.setTitle("Forza 4");
-        frame.setLayout(null);
+        frame.setLayout(new BorderLayout(10, 10));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
         
         pan1.add(lab1);
         f1.add(pan1);
         
-        pan2.add(lab2);
+        pan2.add(lab2, BorderLayout.CENTER);
         f1.add(pan2);
-    }
+	}
     
 	public void showGriglia(){
 
@@ -177,25 +179,142 @@ public class FrameGriglia extends Interfaccia implements Runnable{
             }	
 		}catch (Exception e) {}        
         
-        f2.setBounds(65, 120, 357, 307);
+        f2.setLayout(new GridLayout(6, 7));
         f2.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));  
 
         f2.removeAll();
+
         
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 7; j++){
             	but[i][j].setVisible(true);
-                f2.add(but[i][j]);        
+            	
+                f2.add(but[i][j]);
             }
         }
         
         frame.repaint();
-        frame.add(f1);
-        frame.add(f2);
+        frame.add(f1, BorderLayout.BEFORE_FIRST_LINE);
+        f2JPanel.add(f2);
+        frame.add(f2JPanel, BorderLayout.CENTER);
         
-        frame.setSize(500, 500);
-        frame.setLocation(a);
-        frame.setLayout(null);
+        frame.addComponentListener(new ComponentAdapter() {
+        	public void componentShown(ComponentEvent e) {
+        		lab1.ridimensiona(new Dimension(f1.getWidth(), f1.getHeight()));
+        		lab2.ridimensiona(new Dimension(f1.getWidth(), f1.getHeight()));
+        		
+        		//pulsanti
+        		int h = frame.getHeight();
+        		int w = frame.getWidth();
+        		//(300 * 500) : (getHeight * getWindt) = 500 : x
+        		int areaButton = ((h * w) * 500) / 15000;
+        		int baseButton = areaButton / ((50 * h) / 300);
+        		int altezzaButton = areaButton / ((100 * w) / 400);
+        		
+        		back.revalidate();
+        		back.setPreferredSize(new Dimension((int)(baseButton * 0.8), (int)(altezzaButton * 0.7)));
+        		back.setMaximumSize(back.getPreferredSize());
+        		int sizeFont = (frame.getWidth() * 10) / 500;
+        		back.setFont(new Font("Dialog", Font.BOLD, sizeFont));
+        		back.repaint();
+        		
+        		int xPanelF2 = (int)(w * 0.8);
+        		int yPanelF2 = (int)(h * 0.60);
+        		f2.setPreferredSize(new Dimension(xPanelF2, yPanelF2));
+        		
+        		int lato = (45 * yPanelF2) / 325;
+        		
+        	    newimg1 = img1.getScaledInstance(lato, lato, Image.SCALE_SMOOTH);
+        	    white = new ImageIcon(newimg1);
+        	    
+        	    newimg2 = img2.getScaledInstance(lato, lato, Image.SCALE_SMOOTH);
+        	    yellow = new ImageIcon(newimg2);
+        	    
+        	    newimg3 = img3.getScaledInstance(lato, lato, Image.SCALE_SMOOTH); 
+        	    red = new ImageIcon(newimg3);
+        	    
+        	    f2.revalidate();
+                aggiornaMat();
+                f2.repaint();
+        	}
+        	public void componentResized(ComponentEvent e) {
+        		lab1.ridimensiona(new Dimension(f1.getWidth(), f1.getHeight()));
+        		lab2.ridimensiona(new Dimension(f1.getWidth(), f1.getHeight()));
+                
+        		//pulsanti
+        		int h = frame.getHeight();
+        		int w = frame.getWidth();
+        		//(300 * 500) : (getHeight * getWindt) = 500 : x
+        		int areaButton = ((h * w) * 500) / 15000;
+        		int baseButton = areaButton / ((50 * h) / 300);
+        		int altezzaButton = areaButton / ((100 * w) / 400);
+
+        		back.revalidate();
+        		back.setPreferredSize(new Dimension((int)(baseButton * 0.8), (int)(altezzaButton * 0.7)));
+        		back.setMaximumSize(back.getPreferredSize());
+        		int sizeFont = (frame.getWidth() * 10) / 500;
+        		back.setFont(new Font("Dialog", Font.BOLD, (int)(sizeFont)));
+        		back.repaint();
+        		
+        		//ridimensionamento bottoni
+        		//0.6 y
+        		//0.8 x
+        		int xPanelF2 = (int)(w * 0.8);
+        		int yPanelF2 = (int)(h * 0.6);
+        		f2.setPreferredSize(new Dimension(xPanelF2, yPanelF2));
+                
+        		//45 : 400 = x : xPanelF2;
+        		int lato = (45 * yPanelF2) / 325;
+        		
+        	    newimg1 = img1.getScaledInstance(lato, lato, Image.SCALE_SMOOTH);
+        	    white = new ImageIcon(newimg1);
+        	    
+        	    newimg2 = img2.getScaledInstance(lato, lato, Image.SCALE_SMOOTH);
+        	    yellow = new ImageIcon(newimg2);
+        	    
+        	    newimg3 = img3.getScaledInstance(lato, lato, Image.SCALE_SMOOTH); 
+        	    red = new ImageIcon(newimg3);
+        	    
+        	    f2JPanel.revalidate();
+        	    f2.revalidate();
+                
+                aggiornaMat();
+                f2.repaint();
+                f2JPanel.repaint();
+        		
+        		//reimposto default size di interfaccia
+        		if(!getDefaultSize().equals(frame.getSize()))
+        		{
+        			if(!getDefaultSize().equals(new Dimension(0, 0)) && (!getDefaultSize().equals(new Dimension(500, 300)) && !getDefaultSize().equals(new Dimension(500, 430)))){
+        				setSized(true);
+        			}
+    				setDefaultSize(new Dimension(frame.getSize()));
+        		}
+        	}
+        	public void componentMoved(ComponentEvent e) {
+        		if(!getDefaultPosition().equals(frame.getLocation()))
+        		{
+        			if(!getDefaultPosition().equals(new Point(0, 0))) {
+        				setMoved(true);
+        			}
+    				setDefaultPosition(frame.getLocation());
+        		}
+        	}
+		});
+        
+        //frame.pack();
+        
+        if(!isSized) {
+        	frame.setSize(500, 500);
+        }else {
+        	frame.setSize(getDefaultSize());
+        }
+        
+        if(!isMoved) {
+        	frame.setLocation(a);
+        } else {
+			frame.setLocation(getDefaultPosition());
+		}
         frame.setVisible(true);
     }
     
@@ -297,7 +416,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     public void aggiornaMat(int pl, int liv) {
     	for(int i = 0; i < 6; i++)
     		for(int j = 0; j < 7; j++)
-    			if(MatAlg.getMat(i, j) == 3 || MatAlg.getMat(i, j) == 4)
+    			if(m.getMat(i, j) == 3 || m.getMat(i, j) == 4)
     				but[i][j].setEnabled(false);
     	
     	if(pl == 0) 
@@ -342,13 +461,15 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     		}
     }
     
-    public static void aggiornaMat() {
+    public void aggiornaMat() {
     	for(int i = 0; i < 6; i++) {
     		for(int j = 0; j < 7; j++) {
-    			if(MatAlg.getMat(i, j) == 1)
+    			if(m.getMat(i, j) == 1)
     				but[i][j].setIcon(yellow);
-    			else if(MatAlg.getMat(i, j) == 2)
+    			else if(m.getMat(i, j) == 2)
     				but[i][j].setIcon(red);
+    			else if(m.getMat(i, j) == 0)
+    				but[i][j].setIcon(white);
     		}
     	}
     }
