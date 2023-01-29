@@ -204,7 +204,6 @@ public class FrameTipologia extends Interfaccia{
     public int getTipologiaSelezionata() {
     	if(ascoltaTipologia)
     	{
-    		System.out.println("289");
     		ascoltaTipologia = false;
     		return getTipologia()? 1 : 0;
     	}

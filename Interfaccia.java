@@ -2,7 +2,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 public class Interfaccia {
-	MatAlg m = new MatAlg();
+	protected MatAlg m = new MatAlg();
 	
 	FrameTipologia frTipo;
 	FrameLivelli frLiv;
@@ -125,7 +125,6 @@ public class Interfaccia {
 	private void showGri(FrameGriglia frGri) throws InterruptedException{
 		//MatAlg.simulaPareggio();
 		//System.out.println("showGri  1vs1");
-		
 		DataFile file = new DataFile();
 		
 		while(file.getStato() == -1);
@@ -150,6 +149,9 @@ public class Interfaccia {
 		DataFile file = new DataFile();
 		
 		m.setNf(liv);
+		
+		//m.simulaPareggio();
+		
 		frGri.showGriglia();
 		
 		boolean pl = file.getRound(); 	//0: pl1; 1: pl2		//player iniziale

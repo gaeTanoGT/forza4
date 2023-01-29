@@ -3,8 +3,11 @@
 
 using namespace std;
 
+#include <stdlib.h>  
+#include <stdio.h>  
 #include <iostream>
 #include <vector>
+#include <time.h>  
 
 #include <fstream>
 
@@ -42,11 +45,13 @@ JNIEXPORT jintArray JNICALL Java_Jni_getMossaBot
         jint arRig[7];      //TODO: lubìnghezza prefissata
         env->GetIntArrayRegion(arr, 0, col, arRig);
 
+        //TODO: ATTENZIONE ALLE ASSEGNAZIONI    ->      POSSIBILE ERRORE 0 = !0
         for (int j = 0; j < col; j++)
             mat[i][j] = arRig[j];
     }
-    
+
     //stampaMat2(mat);
+    srand((unsigned)time(NULL));
 
     if (liv == 0) {
         sceltaBot(mat, false);
@@ -110,7 +115,7 @@ void sceltaBot(jint Mat[][7], bool p)
     for (int i = 0; i <= 5; i++)
         for (int j = 0; j <= 6; j++)
         {
-            
+
             //righe
             if ((((Mat[i][j] == Mat[i][j + 1] || Mat[i][j] == Mat[i][j + 2]) && Mat[i][j] == Mat[i][j + 3])
                 || (Mat[i][j] == Mat[i][j + 1] && (Mat[i][j] == Mat[i][j + 2] || Mat[i][j] == Mat[i][j + 3])))
@@ -465,7 +470,7 @@ void sceltaBot2(jint Mat[][7], bool p)
                             }
                             else if ((Mat[i + nV][j + nV - 1] == 0 && i + nV != 5) && num2[1] == 1)   //se non è presente la base al di sotto non considerare la situazione
                                 break;
-                            else if ((Mat[i + nV][j + nV - 1] == 0 && i + nV != 5) && nV != 4)
+                            else if ((Mat[i + nV][j + nV - 1] == 0 && i + nV != 5) && nV != 4 || (Mat[i + nV][j + nV - 1] == 0 && i + nV - 1 != 5 && nV == 3))      //se non è presente la base al di sotto, caso in cui la testa è alla quartultima riga
                                 r = false;      //se non hai la base al disotto la priorità corrisponderà a 4
                         }
                     }
@@ -518,17 +523,19 @@ void sceltaBot2(jint Mat[][7], bool p)
                                     vetPrior.push_back(1);      //livello priorità = 1
                                     vetRig.push_back(i - nV + 1);
                                     vetCol.push_back(j + nV - 1);
+                                    break;
                                 }
                                 else if ((num2[0] == 2 || !r) && num2[1] >= 2)
                                 {
                                     vetPrior.push_back(4);      //livello priorità = 4
                                     vetRig.push_back(i - nV + 1);
                                     vetCol.push_back(j + nV - 1);
+                                    break;
                                 }
                             }
                             else if ((Mat[i - nV + 2][j + nV - 1] == 0 && i - nV + 1 != 5) && num2[1] == 1)   //se non è presente la base al di sotto non considerare la situazione
                                 break;
-                            else if ((Mat[i - nV + 2][j + nV - 1] == 0 && i - nV + 1 != 5) && nV != 4)
+                            else if ((Mat[i - nV + 2][j + nV - 1] == 0 && i - nV + 1 != 5) && nV != 4)      
                                 r = false;      //se non hai la base al disotto la priorità corrisponderà a 4
                         }
                     }
@@ -658,7 +665,6 @@ void sceltaBot4(jint Mat[][7], bool p)
     }
     else
     {
-        srand(time(NULL));
         //altrimenti random -- livello 0, 1
         int c = rand() % 7;
         if (Mat[0][c] == 0)      //se c'è sempre spazio nella colonna corrispondente per il gettone
@@ -670,7 +676,6 @@ void sceltaBot4(jint Mat[][7], bool p)
         else
             sceltaBot4(Mat, false);
     }
-
 }
 
 bool assegnaBot(int lev, int nK, int nF)
@@ -682,24 +687,24 @@ bool assegnaBot(int lev, int nK, int nF)
     //CONTINUARE CON SCRITTURA SU FILE
 
         //verifico esisitenza di coordinate a priorit� 1
-        for (int i = 0; i < vetPrior.size(); i++)
-            if (vetPrior[i] == 1 && lev != 0)
-            {
-                int rig = vetRig[i];
-                int col = vetCol[i];
-                //assegna(Mat, 2, rig, col);
-                //cout << "PRIOR 1\t " << vetRig[i] << "  " << vetCol[i];
+    for (int i = 0; i < vetPrior.size(); i++)
+        if (vetPrior[i] == 1 && lev != 0)
+        {
+            int rig = vetRig[i];
+            int col = vetCol[i];
+            //assegna(Mat, 2, rig, col);
+            //cout << "PRIOR 1\t " << vetRig[i] << "  " << vetCol[i];
 
-                f1 << "PRIOR 1\t " << vetRig[i] << "  " << vetCol[i] << endl;
-                f1.close();
+            f1 << "PRIOR 1\t " << vetRig[i] << "  " << vetCol[i] << endl;
+            f1.close();
 
-                arr[0] = vetRig[i];
-                arr[1] = vetCol[i];
+            arr[0] = vetRig[i];
+            arr[1] = vetCol[i];
 
-                pulisciVet(true);
-                break;
-                return false;
-            }
+            pulisciVet(true);
+            break;
+            return false;
+        }
 
     //verifico esisitenza di coordinate a priorit� 2
     for (int i = 0; i < vetPrior.size(); i++)
@@ -742,7 +747,7 @@ bool assegnaBot(int lev, int nK, int nF)
 
                 f1 << "PRIOR 3\t " << vetRig[i] << "  " << vetCol[i] << endl;
                 f1.close();
-                
+
                 arr[0] = vetRig[i];
                 arr[1] = vetCol[i];
 
@@ -765,7 +770,7 @@ bool assegnaBot(int lev, int nK, int nF)
 
                 f1 << "PRIOR 4\t " << vetRig[i] << "  " << vetCol[i] << endl;
                 f1.close();
-                
+
                 arr[0] = vetRig[i];
                 arr[1] = vetCol[i];
 
@@ -804,7 +809,7 @@ bool assegnaBot(int lev, int nK, int nF)
 
             f1 << "PRIOR 6\t " << vetRig[i] << "  " << vetCol[i] << endl;
             f1.close();
-            
+
             arr[0] = vetRig[i];
             arr[1] = vetCol[i];
 

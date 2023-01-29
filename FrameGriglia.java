@@ -25,24 +25,24 @@ import javax.swing.JRadioButton;
 
 public class FrameGriglia extends Interfaccia implements Runnable{
 	
-	private final String bianco = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\bianco.png";
-	private final String giallo = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\giallo.png";
-	private final String rosso = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\rosso.png";
+	private static final String bianco = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\bianco.png";
+	private static final String giallo = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\giallo.png";
+	private static final String rosso = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\rosso.png";
 	
-	ImageIcon ic1 = new ImageIcon(bianco);
-    Image img1 = ic1.getImage(); // transform it 
-    Image newimg1 = img1.getScaledInstance(45,45, Image.SCALE_SMOOTH);
-    ImageIcon white = new ImageIcon(newimg1);
+	static ImageIcon ic1 = new ImageIcon(bianco);
+	static  Image img1 = ic1.getImage(); // transform it 
+    static Image newimg1 = img1.getScaledInstance(45,45, Image.SCALE_SMOOTH);
+    static ImageIcon white = new ImageIcon(newimg1);
     
-    ImageIcon ic2 = new ImageIcon(giallo);
-    Image img2 = ic2.getImage(); // transform it 
-    Image newimg2 = img2.getScaledInstance(45,45, Image.SCALE_SMOOTH);
-    ImageIcon yellow = new ImageIcon(newimg2);
+    static  ImageIcon ic2 = new ImageIcon(giallo);
+    static Image img2 = ic2.getImage(); // transform it 
+    static Image newimg2 = img2.getScaledInstance(45,45, Image.SCALE_SMOOTH);
+    static ImageIcon yellow = new ImageIcon(newimg2);
     
-    ImageIcon ic3 = new ImageIcon(rosso);
-    Image img3 = ic3.getImage(); // transform it 
-    Image newimg3 = img3.getScaledInstance(45,45, Image.SCALE_SMOOTH); 
-    ImageIcon red = new ImageIcon(newimg3);
+    static ImageIcon ic3 = new ImageIcon(rosso);
+    static Image img3 = ic3.getImage(); // transform it 
+    static Image newimg3 = img3.getScaledInstance(45,45, Image.SCALE_SMOOTH); 
+    static ImageIcon red = new ImageIcon(newimg3);
     
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     Point p = new Point(500, 500);
@@ -63,7 +63,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 
     JRadioButton[] rad = new JRadioButton[4];
 
-    JButton[][] but = new JButton[6][7];
+    static JButton[][] but = new JButton[6][7];
 
     ButtonGroup gr = new ButtonGroup();
 
@@ -184,7 +184,6 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 
         f2.removeAll();
 
-        
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 7; j++){
             	but[i][j].setVisible(true);
@@ -321,7 +320,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     private void setCol(int col){
     	this.col = col;
   
-    	if(MatAlg.getEnd(col) != -1) {
+    	if(m.getEnd(col) != -1) {
     		try {
     			if(!th.isAlive()) {
         			th = new Thread(this);
@@ -350,9 +349,9 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     	//ottengo coordinate per la transizione
     	int f = 0;
     	if(!pl) {
-    		f = MatAlg.getEnd(col);		//ultima riga disponibile
+    		f = m.getEnd(col);		//ultima riga disponibile
     	}else {
-    		f = MatAlg.getVrig();
+    		f = m.getVrig();
     	}
     	if(f == -1)
     		return false;
@@ -369,14 +368,14 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     		if(i != f)
     			but[i][col].setIcon(white);
     	}
-    	MatAlg.setGettone(f, col, pl, tipologia);
+    	m.setGettone(f, col, pl, tipologia);
     	return true;
     }
     
     public boolean riempiCol(int col, boolean pl) throws InterruptedException{
     	//ottengo coordinate per la transizione
     	int f = 0;
-   		f = MatAlg.getEnd(col);		//ultima riga disponibile
+   		f = m.getEnd(col);		//ultima riga disponibile
     	
     	if(f == -1)
     		return false;
@@ -393,7 +392,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     		if(i != f)
     			but[i][col].setIcon(white);
     	}
-    	MatAlg.setGettone(f, col, pl, tipologia);
+    	m.setGettone(f, col, pl, tipologia);
     	return true;
     }
     
@@ -468,7 +467,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     				but[i][j].setIcon(yellow);
     			else if(m.getMat(i, j) == 2)
     				but[i][j].setIcon(red);
-    			else if(m.getMat(i, j) == 0)
+    			else if(m.getMat(i, j) == 0 || m.getMat(i, j) == 4)
     				but[i][j].setIcon(white);
     		}
     	}
@@ -495,7 +494,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
     
     //liv pl si possono toglire
     protected boolean verificaEnd(DataFile file, boolean bot) throws InterruptedException {
-		if(MatAlg.getVincitore() != 0) {	//vittoria di qualcuno
+		if(m.getVincitore() != 0) {	//vittoria di qualcuno
 			aggiornaMat(pl? 1 : 0, liv);
 			
 			file.updateData(pl? 1 : 0);
@@ -515,8 +514,6 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 	    	setGrigliaBianca();
 	    	m.clearMat();
 	    	
-	    	System.out.println("VITTORIA QUALCUNO: " + liv);
-	    	
 	    	if(liv == -1)
 	    	{
 	    		mostraFrame(false);
@@ -528,7 +525,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 	    	}
 	    	
 	    	return true;
-		}else if(MatAlg.verificaEnd()) {		//pareggio
+		}else if(m.verificaEnd()) {		//pareggio
 			aggiornaMat(2, liv);
 	    	JFrame2 fr2 = new JFrame2(3, liv);		//restituisce valore intero tra i due valori possibili
 	    	
@@ -579,8 +576,6 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 			
 			cambiaLab2(pl);
 			
-			m.stampaMat();
-			System.out.println();
 		}else if(tipologia == 1) {
 			if(!pl) {
 				int col = getCol();
@@ -596,9 +591,7 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 				cambiaLab2Bot(pl);
 				
 				//if(pl){		//mossa bot
-				System.out.println("LIVELLO DI RUN " + liv);
 			    col = m.mossaBot(liv);
-			    System.out.println("colllll: " + col);
 			    try {
 					riempiColBot(col, pl);
 				} catch (InterruptedException e) {
@@ -613,10 +606,8 @@ public class FrameGriglia extends Interfaccia implements Runnable{
 				}
 			    
 			    cambiaLab2Bot(pl);
-			}else if(pl){		//mossa bot		//fase inizializzazione
-			System.out.println("LIVELLO DI RUN " + liv);
+			}else if(pl){		//mossa bot		//fase inizializzazione/
 			    col = m.mossaBot(liv);
-			    System.out.println("colllll: " + col);
 			    try {
 					riempiColBot(col, pl);
 				} catch (InterruptedException e) {

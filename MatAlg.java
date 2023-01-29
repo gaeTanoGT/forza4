@@ -1,11 +1,11 @@
-import java.util.Arrays;
+
 
 public class MatAlg {
 
-	static int[][] mat = new int[6][7];
+	int[][] mat = new int[6][7];
 	
 	private int nF, nK = 0;
-	private static int[] v = new int[3]; 	//rig, col, nK
+	private int[] v = new int[3]; 	//rig, col, nK
 	
 	public MatAlg() {
 		
@@ -20,7 +20,7 @@ public class MatAlg {
 		}
 	}
 	
-	public static int getEnd(int col) {
+	public int getEnd(int col) {
 		for(int i = 5; i >= 0; i--) {
 			if(mat[i][col] == 0)
 				return i;
@@ -28,7 +28,7 @@ public class MatAlg {
 		return -1;
 	}
 	
-	public static void setGettone(int rig, int col, boolean pl, int tipologia) {
+	public void setGettone(int rig, int col, boolean pl, int tipologia) {
 		if(tipologia == 0) {
 			if(!pl)
 				mat[rig][col] = 1;
@@ -37,11 +37,13 @@ public class MatAlg {
 		}else if(tipologia == 1) {
 			if(!pl)
 				mat[rig][col] = 1;
+			else
+				mat[rig][col] = 2;
 		}
 		
 	}
 	
-	public static int getVincitore() {
+	public int getVincitore() {
 		//righe
 	    for(int i = 0; i < 6; i++)
 	        for(int j = 0; j <= 3; j++)
@@ -85,7 +87,7 @@ public class MatAlg {
 	    return 0;
 	}
 
-	public static boolean verificaEnd() {
+	public boolean verificaEnd() {
 		for(int i = 0; i < 6; i++)
 	    {
 	        for(int j = 0; j < 7; j++)
@@ -108,6 +110,7 @@ public class MatAlg {
 	}
 	
 	public void simulaPareggio() {
+		/*
 		//mat[0][0] = 1;
 		mat[1][0] = 2;
 		mat[2][0] = 2;
@@ -150,30 +153,81 @@ public class MatAlg {
 		mat[3][6] = 2;
 		mat[4][6] = 1;
 		mat[5][6] = 2;
+*/		
 		
+		/* TEST BUG */
+		//mat[0][0] = 1;
+//		mat[1][0] = 2;
+		//mat[2][0] = 2;
+		//mat[3][0] = 2;
+		//mat[4][0] = 1;
+		mat[5][0] = 0;
+		//mat[0][1] = 2;
+		//mat[1][1] = 2;
+		//mat[2][1] = 1;
+		//mat[3][1] = 2;
+		mat[4][1] = 1;
+		mat[5][1] = 2;
+		//mat[0][2] = 2;
+		mat[1][2] = 0;	//
+		mat[2][2] = 1;
+		mat[3][2] = 2;
+		mat[4][2] = 1;
+		mat[5][2] = 1;
+		mat[0][3] = 2;
+		mat[1][3] = 1;
+		mat[2][3] = 2;
+		mat[3][3] = 1;
+		mat[4][3] = 2;
+		mat[5][3] = 1;
+		//mat[0][4] = 2;
+		mat[1][4] = 2;
+		mat[2][4] = 1;
+		mat[3][4] = 2;
+		mat[4][4] = 1;
+		mat[5][4] = 2;
+		//mat[0][5] = 1;
+		//mat[1][5] = 2;
+		//mat[2][5] = 1;
+		mat[3][5] = 0;
+		mat[4][5] = 0;
+		mat[5][5] = 0;	//
+		//mat[0][6] = 1;
+		//mat[1][6] = 1;
+		//mat[2][6] = 1;
+		//mat[3][6] = 2;
+		mat[4][6] = 2;
+		mat[5][6] = 2;
+
 		//super.aggiornaMat();
 		//FrameGriglia.aggiornaMat();
 	}
 	
 	public int mossaBot(int liv) {
-		System.out.println(liv + "\t" + nK + "\t" + nF);
+		//System.out.println(liv + "\t||" + nK + "\t" + nF);
 		Jni c = new Jni();
+		
+		//stampaMat();
+		//System.out.println("upPreAlgoritm");
+
 		v = c.getMossaBot(liv, mat, nK, nF);
+
+		//System.err.println(Arrays.toString(v));		//rig - col - nK
 		
-		System.err.println(Arrays.toString(v));
-		
+		//se la riga non è definita
 		if(v[0] == -1) {
-			v[0] = getEnd(v[1]);
-			mat[v[0]][v[1]] = 2;
-		}else {
-			mat[v[0]][v[1]] = 2;
+			v[0] = getEnd(v[1]);    //determino l'ultima riga destinata al gettone bot
+			mat[v[0]][v[1]] = 4;	//aggiorno successivamente a 2
+		}else {					//altrimenti seguo le coordinate dell'algoritmo
+			mat[v[0]][v[1]] = 4;
 		}
-		stampaMat();
+		//stampaMat();
 		
+		//se nK nell'algoritmo è cambiato -> aggiorna il valore dell'attributo della classe nK
 		if(v[2] > nK)
 			nK = v[2];
 		
-	    System.out.println("nK: " + nK + "\tnF: " + nF);
+	    //System.out.println("nK: " + nK + "\tnF: " + nF);
 		
 	    return v[1];
 	}
@@ -194,9 +248,11 @@ public class MatAlg {
 			nF = -2;
 			break;
 		}
+		
+		//System.err.println(nK + " " + nF);
 	}
 	
-	public static int getVrig(){
+	public int getVrig(){
 		return v[0];
 	}
 	
