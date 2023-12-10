@@ -25,9 +25,9 @@ import javax.swing.JRadioButton;
 
 public class FrameGriglia extends Interfaccia implements Runnable{
 	
-	private static final String bianco = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\bianco.png";
-	private static final String giallo = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\giallo.png";
-	private static final String rosso = "C:\\Users\\gaeta\\Documents\\java\\p1v7\\Immagini\\rosso.png";
+	private static final String bianco = "..\\img\\bianco.png";
+	private static final String giallo = "..\\img\\giallo.png";
+	private static final String rosso = "C:..\\img\\rosso.png";
 	
 	static ImageIcon ic1 = new ImageIcon(bianco);
 	static  Image img1 = ic1.getImage(); // transform it 
