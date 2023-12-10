@@ -87,7 +87,7 @@ public class JFrame2 extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setLayout(null);
-        this.setVisible(true);
+        	this.setVisible(true);
 	}
 	
 	private void setBut(int b) {
