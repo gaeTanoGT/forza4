@@ -13,7 +13,7 @@ using namespace std;
 
 bool notCol[7];         //array che ha 1 se il bot non deve entrare nella colonna
 
-vector<int> vetPrior;           //livello priorit� della sequenza       
+vector<int> vetPrior;           //livello priorita' della sequenza       
         //[1 = mossa vittoria; 2 = mossa per parare avversario; 3 = colonna adiacente ad avversario; 4 = mossa per creazione di una possibile sequenza; 5 = scelta strategica; 6 = random]
 vector<int> vetRig;             //riga in cui nel caso inserire il gettone player2
 vector<int> vetCol;             //colonna in cui nel caso inserire il gettone player2
